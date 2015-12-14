@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -60,18 +59,18 @@ public class GetAppointmentFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        dragBtn.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent me) {
-                if (me.getAction() == MotionEvent.ACTION_MOVE  ){
-                    LayoutParams params = new LayoutParams(v.getWidth(),  v.getHeight());
-                    //set the margins. Not sure why but multiplying the height by 1.5 seems to keep my finger centered on the button while it's moving
-                    params.setMargins((int)me.getRawX() - v.getWidth()/2, (int)(me.getRawY() - v.getHeight()*1.5), (int)me.getRawX() - v.getWidth()/2, (int)(me.getRawY() - v.getHeight()*1.5));
-                    v.setLayoutParams(params);
-                }
-                return true;
-            }
-        });
+//        dragBtn.setOnTouchListener(new View.OnTouchListener() {
+//
+//            public boolean onTouch(View v, MotionEvent me) {
+//                if (me.getAction() == MotionEvent.ACTION_MOVE  ){
+//                    LayoutParams params = new LayoutParams(v.getWidth(),  v.getHeight());
+//                    //set the margins. Not sure why but multiplying the height by 1.5 seems to keep my finger centered on the button while it's moving
+//                    params.setMargins((int)me.getRawX() - v.getWidth()/2, (int)(me.getRawY() - v.getHeight()*1.5), (int)me.getRawX() - v.getWidth()/2, (int)(me.getRawY() - v.getHeight()*1.5));
+//                    v.setLayoutParams(params);
+//                }
+//                return true;
+//            }
+//        });
     }
 
     @Override
