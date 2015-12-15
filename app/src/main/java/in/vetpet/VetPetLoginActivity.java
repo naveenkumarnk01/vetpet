@@ -1,7 +1,6 @@
 package in.vetpet;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import utilities.DialogUtil;
 import utilities.HttpUtil;
 import utilities.PhoneNumberUtil;
 
@@ -96,17 +96,15 @@ public class VetPetLoginActivity extends AppCompatActivity implements View.OnCli
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             //TODO: validate for results
             if ("SUCCESS".equalsIgnoreCase(result.replace("\"","").trim())) {
                 Intent it = new Intent(VetPetLoginActivity.this, VetPetHomeActivity.class);
                 startActivity(it);
                 finish();
             } else {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.setMessage("Please check:" + result);
-                alertDialog.show();
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                DialogUtil.showCustomAlertDialog(activity,result,0,getLayoutInflater(),activity);
             }
         }
     }
