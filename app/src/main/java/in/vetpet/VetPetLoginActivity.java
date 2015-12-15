@@ -1,6 +1,7 @@
 package in.vetpet;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import utilities.HttpUtil;
+import utilities.PhoneNumberUtil;
 
 
 /**
@@ -33,24 +35,30 @@ public class VetPetLoginActivity extends AppCompatActivity implements View.OnCli
         ed = (EditText) findViewById(R.id.txt_ph_no);
         ed2 = (EditText) findViewById(R.id.txt_password);
         ed.setText("9886216874");
+        ed2.setText("clarence");
         activity = this;
 
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
-            case R.id.btn_login :
+        switch (id) {
+            case R.id.btn_login:
                 // Initialize login asynctask
                 LoginAsyncTask obj = new LoginAsyncTask();
                 //TODO: validation of input
-
+                String msisdn = ed.getText().toString();
+                String password = ed2.getText().toString();
+                Boolean isValiduser = PhoneNumberUtil.isValidPhoneNumber(msisdn);
+                if (isValiduser == null && !isValiduser) {
+                    ed.setError("phone number is incorrect");
+                } else {
+                    obj.execute(msisdn, password);
+                }
                 // pass username password to asynctask
-                obj.execute(ed.getText().toString(), ed2.getText().toString());
+
                 break;
             case R.id.btn_signup:
                 //TODO:
@@ -83,16 +91,23 @@ public class VetPetLoginActivity extends AppCompatActivity implements View.OnCli
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             //TODO: validate for results
-            Intent it = new Intent(VetPetLoginActivity.this, VetPetHomeActivity.class);
-
-            startActivity(it);
+            if ("SUCCESS".equalsIgnoreCase(result.replace("\"","").trim())) {
+                Intent it = new Intent(VetPetLoginActivity.this, VetPetHomeActivity.class);
+                startActivity(it);
+                finish();
+            } else {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.setMessage("Please check:" + result);
+                alertDialog.show();
+            }
         }
     }
 }
